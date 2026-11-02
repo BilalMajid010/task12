@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="container nav">
+            <a class="logo" href="#home">Join<span>Us</span></a>
+            <button type="button" class="menu-button" id="menuButton" aria-expanded="false">Menu</button>
+            <div class="nav-links" id="navLinks">
+                <a href="#registration">Register</a>
+                <a href="#information">Information</a>
+                <button type="button" class="theme-button" id="themeButton">Toggle theme</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" id="home">
+        <section class="intro">
+            <p class="eyebrow">CREATE YOUR ACCOUNT</p>
+            <h1>Registration Form</h1>
+            <p>Complete the form to create your profile. Fields marked with * are required.</p>
+            <div class="status-line" id="pageStatus" role="status">Form is ready.</div>
+        </section>
+
+        <section class="layout" id="registration">
+            <form id="registrationForm" novalidate>
+                <div class="form-heading">
+                    <h2>Personal Information</h2>
+                    <span class="required-note">* Required fields</span>
+                </div>
+
+                <div class="field">
+                    <label for="fullName">Full name *</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name"
+                           required minlength="3" maxlength="50" autocomplete="name">
+                    <small class="error" id="fullNameError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email address *</label>
+                    <input type="email" id="email" name="email" placeholder="name@example.com"
+                           required autocomplete="email">
+                    <small class="error" id="emailError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Phone number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="03001234567"
+                           required pattern="[0-9]{11}" maxlength="11" inputmode="numeric">
+                    <small class="hint">Enter 11 digits without spaces.</small>
+                    <small class="error" id="phoneError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="At least 8 characters" required minlength="8">
+                    <div class="strength-track"><div id="strengthBar"></div></div>
+                    <small id="passwordStrength" class="hint">Password strength: not entered</small>
+                    <small class="error" id="passwordError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword">Confirm password *</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                           placeholder="Re-enter password" required>
+                    <small class="error" id="confirmPasswordError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="birthDate">Date of birth *</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
+                    <small class="error" id="birthDateError"></small>
+                </div>
+
+                <div class="field">
+                    <label>Choose your interests *</label>
+                    <div class="checkbox-grid" id="interestOptions">
+                        <label><input type="checkbox" name="interests" value="Web Development"> Web Development</label>
+                        <label><input type="checkbox" name="interests" value="UI/UX Design"> UI/UX Design</label>
+                        <label><input type="checkbox" name="interests" value="Artificial Intelligence"> Artificial Intelligence</label>
+                        <label><input type="checkbox" name="interests" value="Data Science"> Data Science</label>
+                    </div>
+                    <small class="error" id="interestsError"></small>
+                    <div class="selected-area">
+                        <strong>Selected interests</strong>
+                        <ul id="selectedInterests"><li class="empty-item">No interests selected yet.</li></ul>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="experience">Experience level *</label>
+                    <select id="experience" name="experience" required>
+                        <option value="">Select experience</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <small class="error" id="experienceError"></small>
+                </div>
+
+                <div class="field">
+                    <label for="about">Tell us about yourself *</label>
+                    <textarea id="about" name="about" rows="4" minlength="20" maxlength="300"
+                              placeholder="Write at least 20 characters..." required></textarea>
+                    <div class="counter-row"><small id="charCounter">0 / 300 characters</small></div>
+                    <small class="error" id="aboutError"></small>
+                </div>
+
+                <div class="field checkbox-single">
+                    <label><input type="checkbox" id="terms" name="terms" required> I agree to the terms and conditions *</label>
+                    <small class="error" id="termsError"></small>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" id="submitButton" disabled>Review registration</button>
+                    <button type="reset" class="secondary-button" id="resetButton">Reset form</button>
+                </div>
+                <p class="hint" id="formHint">Complete all required fields to enable the review button.</p>
+                <div id="successMessage" class="success-message" role="status" aria-live="polite" hidden></div>
+            </form>
+
+            <aside class="side-panel">
+                <h2>Registration checklist</h2>
+                <ul id="checklist">
+                    <li data-check="name"><input type="checkbox"> name</li>
+                    <li data-check="email"><input type="checkbox">Valid email</li>
+                    <li data-check="phone"><input type="checkbox">Phone number</li>
+                    <li data-check="password"><input type="checkbox">Password</li>
+                    <li data-check="interests"><input type="checkbox">At least one interest</li>
+                    <li data-check="about"><input type="checkbox">About you</li>
+                    <li data-check="terms"><input type="checkbox">Terms accepted</li>
+                </ul>
+                <div class="progress-track"><div id="progressBar"></div></div>
+                <p id="progressText" class="hint">0% completed</p>
+
+                <div class="dropdown">
+                    <button type="button" id="helpToggle" aria-expanded="false">Registration help ▾</button>
+                    <div id="helpContent" class="dropdown-content" hidden>
+                        Use a valid email, an 11-digit phone number, a password with at least 8 characters, and select one or more interests.
+                    </div>
+                </div>
+                <p class="hint">Scroll down for additional information.</p>
+            </aside>
+        </section>
+
+        <section id="information" class="info-section">
+            <h2>Additional Information</h2>
+            <div class="tabs" role="tablist" aria-label="Additional information">
+                <button type="button" class="tab active" data-tab="privacy" role="tab" aria-selected="true">Privacy</button>
+                <button type="button" class="tab" data-tab="process" role="tab" aria-selected="false">Process</button>
+                <button type="button" class="tab" data-tab="support" role="tab" aria-selected="false">Support</button>
+            </div>
+            <div class="tab-panel" id="tabPanel" role="tabpanel">
+                <h3>Privacy</h3>
+                <p>Your registration details are used for this demonstration only.</p>
+            </div>
+
+            <div class="accordion">
+                <button type="button" class="accordion-button" aria-expanded="false">What happens after registration?</button>
+                <div class="accordion-content" hidden>
+                    <p>You will see an on-screen confirmation. This demo does not send your information to a server.</p>
+                </div>
+                <button type="button" class="accordion-button" aria-expanded="false">Can I change my information?</button>
+                <div class="accordion-content" hidden>
+                    <p>Yes. Use the reset button to clear the form and enter your information again.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dom-demo">
+            <h2>DOM interaction demo</h2>
+            <p id="demoText">This text can be changed with JavaScript.</p>
+            <div class="button-row">
+                <button type="button" id="changeTextButton">Change text</button>
+                <button type="button" id="addNoteButton">Add note</button>
+                <button type="button" id="removeNoteButton" class="secondary-button">Remove note</button>
+            </div>
+            <div id="notesArea"></div>
+            <p class="hint" id="windowInfo"></p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Interactive Registration Form Vanilla JavaScript practice</p>
+        <button type="button" id="backToTop">Back to top ↑</button>
+    </footer>
+
+    <div class="modal-backdrop" id="confirmationModal" hidden>
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal-close" id="closeModal" aria-label="Close dialog">×</button>
+            <h2 id="modalTitle">Confirm your registration</h2>
+            <div id="reviewDetails"></div>
+            <p>Do you want to complete this registration?</p>
+            <div class="button-row">
+                <button type="button" id="confirmButton">Confirm registration</button>
+                <button type="button" id="cancelButton" class="secondary-button">Go back</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
